@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 
 @Controller('expenses')
 export class ExpensesController {
@@ -6,4 +6,22 @@ export class ExpensesController {
     getExpenses(){
         return "All Expneses"
     }
+
+    @Post()
+    createExpense(){
+        return "Create Expense"
+    }
+
+    @Patch()
+    updateExpense(){
+        return "Updated expense"
+    }
+
+    @Delete()
+    deleteExpense(){
+        return "Delete expense"
+    }
+
+
+
 }
