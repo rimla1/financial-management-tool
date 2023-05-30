@@ -1,10 +1,15 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('expenses')
 export class ExpensesController {
     @Get()
     getExpenses(){
         return "All Expneses"
+    }
+
+    @Get(":id")
+    getExpense(@Param("id") id: string){
+        return `Single Expense ${id}`
     }
 
     @Post()
