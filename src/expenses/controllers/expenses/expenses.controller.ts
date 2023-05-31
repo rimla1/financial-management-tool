@@ -1,30 +1,34 @@
 import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { ExpensesService } from 'src/expenses/services/expenses/expenses.service';
 
 @Controller('expenses')
 export class ExpensesController {
+
+    constructor(private readonly expensesService: ExpensesService){}
+
     @Get()
     getExpenses(){
-        return "All Expneses"
+        return this.expensesService.getExpenses()
     }
 
     @Get(":id")
     getExpense(@Param("id") id: string){
-        return `Single Expense ${id}`
+        return this.expensesService.getExpense()
     }
 
     @Post()
     createExpense(){
-        return "Create Expense"
+        return this.expensesService.createExpense()
     }
 
     @Patch()
     updateExpense(){
-        return "Updated expense"
+        return this.expensesService.updateExpense()
     }
 
     @Delete()
     deleteExpense(){
-        return "Delete expense"
+        return this.expensesService.deleteExpense()
     }
 
 
