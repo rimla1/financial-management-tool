@@ -15,7 +15,6 @@ export class ExpensesController {
         } catch (e) {
             console.log(e)
         }
-
     }
 
     @Get(":id")
