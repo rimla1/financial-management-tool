@@ -23,7 +23,7 @@ const expenses = [
   },
 ];
 
-let balance = 1000
+
 
 @Injectable()
 export class ExpensesService {
@@ -37,12 +37,15 @@ export class ExpensesService {
 
   createExpense(expenseData: any) {
     // Get Balance from database
-
+    let balance = 1000
     // Balance - Expense amount 
+    let newBalance = balance - expenseData.amount
+    console.log(`service ${newBalance}`)
 
     // Update Balance
 
     // Create Expense
+    
     return 'Create Expense from service';
   }
 
