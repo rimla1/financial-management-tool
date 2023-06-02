@@ -35,9 +35,14 @@ export class ExpensesService {
     return expenses[0];
   }
 
-  createExpense() {
-    let amount = 100
-    
+  createExpense(expenseData: any) {
+    // Get Balance from database
+
+    // Balance - Expense amount 
+
+    // Update Balance
+
+    // Create Expense
     return 'Create Expense from service';
   }
 

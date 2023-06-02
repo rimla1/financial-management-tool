@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateExpenseDto } from 'src/expenses/dtos/createExpense.dto';
+import { UpdateExpenseDto } from 'src/expenses/dtos/updateExpense.dto';
 import { ExpensesService } from 'src/expenses/services/expenses/expenses.service';
 
 @Controller('expenses')
@@ -8,34 +10,53 @@ export class ExpensesController {
 
     @Get()
     getExpenses(){
-        return this.expensesService.getExpenses()
+        try {
+            return this.expensesService.getExpenses()
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     @Get(":id")
     getExpense(@Param("id") id: number){
-        return this.expensesService.getExpense()
+        try {
+            return this.expensesService.getExpense()
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     @Post()
-    createExpense(@Body() expenseData){
-        const {title, amount, description} = expenseData
-        console.log(title, amount, description)
-        return this.expensesService.createExpense()
+    createExpense(@Body() expenseData: CreateExpenseDto){
+        try {
+            return this.expensesService.createExpense(expenseData)
+        } catch (e) {
+            console.log(e)
+        }
+       
     }
 
     @Patch(":id")
-    updateExpense(@Body() updateExpenseData, @Param("id") id: number){
-        const {type, amount, description} = updateExpenseData
-        console.log(type, amount, description, id)
-        return this.expensesService.updateExpense()
+    updateExpense(@Body() {type, amount, description}: UpdateExpenseDto, @Param("id") id: number){
+        try {
+            return this.expensesService.updateExpense()
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
     @Delete(":id")
     deleteExpense(@Param("id") id: number){
-        console.log(id)
-        return this.expensesService.deleteExpense()
+        try {
+            return this.expensesService.deleteExpense()
+        } catch (e) {
+            console.log(e)
+        }
     }
 
-    
+
 
 }
