@@ -1,8 +1,5 @@
-import { IsOptional } from 'class-validator'
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateExpenseDto } from './createExpense.dto';
 
-export class UpdateExpenseDto {
-    type?: string
-    amount?: number
-    description?: string
 
-}
+export class UpdateExpenseDto extends PartialType(CreateExpenseDto){}
