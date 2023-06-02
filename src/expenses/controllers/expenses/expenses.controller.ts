@@ -31,6 +31,7 @@ export class ExpensesController {
     @Post()
     createExpense(@Body() expenseData: CreateExpenseDto){
         try {
+            console.log(expenseData)
             return this.expensesService.createExpense(expenseData)
         } catch (e) {
             console.log(e)
@@ -39,7 +40,7 @@ export class ExpensesController {
     }
 
     @Patch(":id")
-    updateExpense(@Body() {type, amount, description}: UpdateExpenseDto, @Param("id") id: number){
+    updateExpense(@Body() expenseData: UpdateExpenseDto, @Param("id") id: number){
         try {
             return this.expensesService.updateExpense()
         } catch (e) {
