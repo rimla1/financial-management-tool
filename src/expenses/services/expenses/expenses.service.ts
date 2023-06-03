@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BalanceService } from 'src/balance/services/balance/balance.service';
 
 const expenses = [
   {
@@ -27,6 +28,9 @@ const expenses = [
 
 @Injectable()
 export class ExpensesService {
+
+  constructor(private readonly balanceService: BalanceService){}
+
   getExpenses() {
     return expenses;
   }
@@ -37,7 +41,7 @@ export class ExpensesService {
 
   createExpense(expenseData: any) {
     // Get Balance from database
-    let balance = 1000
+    const balance = this.balanceService.getBalance()
     // Balance - Expense amount 
     let newBalance = balance - expenseData.amount
     console.log(`service ${newBalance}`)
