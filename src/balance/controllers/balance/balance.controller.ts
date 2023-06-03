@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Put } from '@nestjs/common';
+import { SetBalanceDto } from 'src/balance/dtos/setBalance.dto';
 import { BalanceService } from 'src/balance/services/balance/balance.service';
 
 @Controller('balance')
@@ -12,8 +13,9 @@ export class BalanceController {
     }
 
     @Put()
-    createBalance(@Body("balance") balance: number){
-        return this.balanceService.updateBalance(balance)
+    setBalance(@Body() balanceData: SetBalanceDto){
+        const {balance} = balanceData
+        return this.balanceService.setBalance(balance)
     }
-    
+
 }
