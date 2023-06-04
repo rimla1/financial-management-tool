@@ -8,7 +8,9 @@ export class BalanceService {
 
     constructor(@InjectRepository(Balance) private balanceRepository: Repository<Balance>){}
 
-    getBalance(): number{
+    async getBalance(){
+        const balance = await this.balanceRepository.find()
+        console.log(balance[0], "Balance je ovoliko")
         return 500
     }
 

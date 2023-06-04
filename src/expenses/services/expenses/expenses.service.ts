@@ -39,9 +39,9 @@ export class ExpensesService {
     return expenses[0];
   }
 
-  createExpense(expenseData: any) {
+  async createExpense(expenseData: any) {
     // Get Balance from database
-    const balance = this.balanceService.getBalance()
+    const balance = await this.balanceService.getBalance()
     // Balance - Expense amount 
     let newBalance = balance - expenseData.amount
     console.log(`service ${newBalance}`)

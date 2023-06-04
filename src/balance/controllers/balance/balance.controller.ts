@@ -8,7 +8,7 @@ export class BalanceController {
     constructor(private readonly balanceService: BalanceService){}
 
     @Get()
-    getBalance(): number{
+    async getBalance(){
         return this.balanceService.getBalance()
     }
 
