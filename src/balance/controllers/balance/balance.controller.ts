@@ -9,13 +9,13 @@ export class BalanceController {
 
     @Get()
     async getBalance(){
-        return this.balanceService.getBalance()
+        try {
+            const balance = await this.balanceService.getBalance()
+            return balance
+        } catch (e) {
+            console.log(e)
+        }
     }
 
-    @Put()
-    setBalance(@Body() balanceData: SetBalanceDto){
-        const {balance} = balanceData
-        return this.balanceService.setBalance(balance)
-    }
 
 }

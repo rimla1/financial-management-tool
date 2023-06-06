@@ -29,7 +29,7 @@ const expenses = [
 @Injectable()
 export class ExpensesService {
 
-  constructor(private readonly balanceService: BalanceService){}
+  constructor(){}
 
   getExpenses() {
     return expenses;
@@ -41,9 +41,9 @@ export class ExpensesService {
 
   async createExpense(expenseData: any) {
     // Get Balance from database
-    const balance = await this.balanceService.getBalance()
+    // const balance = await this.balanceService.getBalance()
     // Balance - Expense amount 
-    let newBalance = balance - expenseData.amount
+    let newBalance = 500 - expenseData.amount
     console.log(`service ${newBalance}`)
 
     // Update Balance

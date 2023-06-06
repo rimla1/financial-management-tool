@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreditCardsService } from 'src/credit-cards/services/credit-cards/credit-cards.service';
 import { Balance } from 'src/typeorm/entities/balance.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class BalanceService {
+  constructor(
+    @InjectRepository(Balance) private balanceRepository: Repository<Balance>,
+    private readonly creditCardsService: CreditCardsService
+  ) {}
 
-    constructor(@InjectRepository(Balance) private balanceRepository: Repository<Balance>){}
-
-    async getBalance(){
-        const balance = await this.balanceRepository.find()
-        console.log(balance[0], "Balance je ovoliko")
-        return 500
+  async getBalance() {
+    const balance = await this.creditCardsService.sumOfAllAmountsOfCards()
+    if(!balance){
+      return 0
     }
-
-    setBalance(balance): number {
-        console.log(balance, typeof(balance))
-        return balance
-    }
+    return balance;
+  }
 }
