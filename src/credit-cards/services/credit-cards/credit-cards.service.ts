@@ -12,9 +12,9 @@ export class CreditCardsService {
         return this.creditCardRepository.find() 
     }
 
-    getCreditCard(id){
+    async getCreditCard(id: number){
         console.log("service", id, typeof(id))
-        const creditCard = {title: "Credit Card X", balance: 750}
+        const creditCard = await this.creditCardRepository.findOne({where: {id: id}})
         return creditCard
     }
 
@@ -23,9 +23,9 @@ export class CreditCardsService {
         return await this.creditCardRepository.save(creditCard)
     }
 
-    updateCreditCard(id: number, creditCardInfo: any){
-        console.log("Service: ", id, typeof(id), creditCardInfo, typeof(creditCardInfo))
-        const creditCard = {title: "Credit Card P", balance: 15000}
+    async updateCreditCard(id: number, creditCardInfo: any){
+        
+        const creditCard = await this.creditCardRepository.update({id}, {...creditCardInfo})
         return creditCard
     }
 

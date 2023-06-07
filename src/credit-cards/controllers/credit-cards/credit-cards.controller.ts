@@ -16,7 +16,6 @@ import { CreditCardsService } from 'src/credit-cards/services/credit-cards/credi
 export class CreditCardsController {
   constructor(private readonly creditCardsService: CreditCardsService) {}
 
-
   @Get()
   async getCreditCards() {
     try {
@@ -28,7 +27,7 @@ export class CreditCardsController {
   }
 
   @Get(':id')
-  getCreditCard(@Param('id') id: number) {
+  getCreditCard(@Param('id', ParseIntPipe) id: number) {
     try {
       const creditCard = this.creditCardsService.getCreditCard(id);
       return creditCard;
@@ -38,10 +37,11 @@ export class CreditCardsController {
   }
 
   @Post()
-  createCreditCard(@Body() creditCardInfo: CreateCreditCardDto) {
+  async createCreditCard(@Body() creditCardInfo: CreateCreditCardDto) {
     try {
-      const newCreditCard =
-        this.creditCardsService.createCreditCard(creditCardInfo);
+      const newCreditCard = await this.creditCardsService.createCreditCard(
+        creditCardInfo,
+      );
       return newCreditCard;
     } catch (e) {
       console.log(e);
@@ -54,11 +54,8 @@ export class CreditCardsController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     try {
-      const updatedCreditCard = this.creditCardsService.updateCreditCard(
-        id,
-        creditCardInfo,
-      );
-      return 'Updated name/balance';
+      this.creditCardsService.updateCreditCard(id, creditCardInfo);
+      return 'Updated!';
     } catch (e) {
       console.log(e);
     }
