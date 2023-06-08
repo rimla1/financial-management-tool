@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateExpenseDto } from 'src/expenses/dtos/createExpense.dto';
 import { UpdateExpenseDto } from 'src/expenses/dtos/updateExpense.dto';
 import { ExpensesService } from 'src/expenses/services/expenses/expenses.service';
@@ -18,9 +18,9 @@ export class ExpensesController {
     }
 
     @Get(":id")
-    getExpense(@Param("id") id: number){
+    getExpense(@Param("id", ParseIntPipe) id: number){
         try {
-            return this.expensesService.getExpense()
+            return this.expensesService.getExpense(id)
         } catch (e) {
             console.log(e)
         }
@@ -28,10 +28,10 @@ export class ExpensesController {
     }
 
     @Post()
-    createExpense(@Body() expenseData: CreateExpenseDto){
+    async createExpense(@Body() expenseData: CreateExpenseDto){
         try {
-            console.log(expenseData)
-            return this.expensesService.createExpense(expenseData)
+            const expense = await this.expensesService.createExpense(expenseData)
+            return expense
         } catch (e) {
             console.log(e)
         }

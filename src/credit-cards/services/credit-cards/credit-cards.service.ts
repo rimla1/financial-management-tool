@@ -34,6 +34,14 @@ export class CreditCardsService {
     return creditCard;
   }
 
+  async updateCreditCardByExpense(id: number, amount: number){
+    const creditCard = await this.creditCardRepository.update(
+      { id },
+      { amount },
+    );
+    return creditCard
+  }
+
   deleteCreditCard(id: number) {
     return this.creditCardRepository.delete({ id });
   }
@@ -50,7 +58,7 @@ export class CreditCardsService {
       throw new Error('No credit card found');
     }
     const newBalance = creditCard.amount - amount;
-    await this.updateCreditCard(id, newBalance);
+    await this.updateCreditCardByExpense(id, newBalance);
     return 'CreditCard Updated!';
   }
 }

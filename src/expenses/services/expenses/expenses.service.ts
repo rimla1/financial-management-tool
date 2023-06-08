@@ -1,56 +1,61 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { BalanceService } from 'src/balance/services/balance/balance.service';
+import { CreditCardsService } from 'src/credit-cards/services/credit-cards/credit-cards.service';
+import { Expense } from 'src/typeorm/entities/expense.entity';
+import { Repository } from 'typeorm';
 
-const expenses = [
-  {
-    type: 'Household',
-    amount: 200,
-    description: 'Groceries',
-  },
-  {
-    type: 'Household',
-    amount: 30,
-    description: 'Fresh Water',
-  },
-  {
-    type: 'Party',
-    amount: 500,
-    description: 'Friday night party out with friends',
-  },
-  {
-    type: 'School',
-    amount: 100,
-    description: 'Students loan',
-  },
-];
-
-
+// const expenses = [
+//   {
+//     type: 'Household',
+//     amount: 200,
+//     description: 'Groceries',
+//   },
+//   {
+//     type: 'Household',
+//     amount: 30,
+//     description: 'Fresh Water',
+//   },
+//   {
+//     type: 'Party',
+//     amount: 500,
+//     description: 'Friday night party out with friends',
+//   },
+//   {
+//     type: 'School',
+//     amount: 100,
+//     description: 'Students loan',
+//   },
+// ];
 
 @Injectable()
 export class ExpensesService {
+  constructor(
+    @InjectRepository(Expense) private expenseRepository: Repository<Expense>,
+    private creditCardsService: CreditCardsService
+  ) {}
 
-  constructor(){}
-
-  getExpenses() {
+  async getExpenses() {
+    const expenses = await this.expenseRepository.find();
     return expenses;
   }
 
-  getExpense() {
-    return expenses[0];
+  async getExpense(id) {
+    const expense = await this.expenseRepository.findOne({ where: { id: id } });
+    return expense
   }
 
   async createExpense(expenseData: any) {
-    // Get Balance from database
-    // const balance = await this.balanceService.getBalance()
-    // Balance - Expense amount 
-    let newBalance = 500 - expenseData.amount
-    console.log(`service ${newBalance}`)
+    // create expense
+    const newExpense = await this.expenseRepository.create(expenseData);
 
-    // Update Balance
+    // substract from amount of creditCard
+    await this.creditCardsService.substractFromCreditCard(expenseData.creditCardId, expenseData.amount)
 
-    // Create Expense
-    
-    return 'Create Expense from service';
+    // save expense
+    await this.expenseRepository.save(newExpense)
+
+    return newExpense;
   }
 
   updateExpense() {

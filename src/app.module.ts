@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Balance } from './typeorm/entities/balance.entity';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
 import { Credit_card } from './typeorm/entities/credit-card.entity';
+import { Expense } from './typeorm/entities/expense.entity';
 
 
 @Module({
@@ -17,7 +18,7 @@ import { Credit_card } from './typeorm/entities/credit-card.entity';
     username: 'almirmuminovic', 
     password: 'pass123', 
     database: 'financial-managment-tool', 
-    entities: [Balance, Credit_card],
+    entities: [Balance, Credit_card, Expense],
     synchronize: true,
   }),ExpensesModule, BalanceModule, CreditCardsModule],
   controllers: [AppController],

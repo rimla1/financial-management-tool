@@ -10,6 +10,10 @@ export class CreateExpenseDto {
     amount: number
 
     @IsNotEmpty()
+    @IsNumber()
+    creditCardId: number
+
+    @IsNotEmpty()
     @IsString()
     description: string
 }
