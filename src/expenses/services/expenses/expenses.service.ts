@@ -5,29 +5,6 @@ import { CreditCardsService } from 'src/credit-cards/services/credit-cards/credi
 import { Expense } from 'src/typeorm/entities/expense.entity';
 import { Repository } from 'typeorm';
 
-// const expenses = [
-//   {
-//     type: 'Household',
-//     amount: 200,
-//     description: 'Groceries',
-//   },
-//   {
-//     type: 'Household',
-//     amount: 30,
-//     description: 'Fresh Water',
-//   },
-//   {
-//     type: 'Party',
-//     amount: 500,
-//     description: 'Friday night party out with friends',
-//   },
-//   {
-//     type: 'School',
-//     amount: 100,
-//     description: 'Students loan',
-//   },
-// ];
-
 @Injectable()
 export class ExpensesService {
   constructor(
@@ -58,7 +35,27 @@ export class ExpensesService {
     return newExpense;
   }
 
-  updateExpense() {
+  async updateExpense(id, expenseData) {
+    const expense = await this.expenseRepository.findOne({where: {id: id}})
+    if(!expense){
+      throw new Error("No Expense found!")
+    }
+    const creditCard = await this.creditCardsService.getCreditCard(expense.creditCardId)
+
+    if(expenseData.creditCardId !== expense.creditCardId){
+      return "Menjate expense sa jedne na drugu karticu!"
+    }
+
+    // expense.amount expense.
+    console.log(`updated amount for expense is: `, expenseData.amount)
+    console.log(`old amount for expense is: `, expense.amount)
+    console.log(`old amount for credit card is: `, creditCard.amount)
+    const newBalance = creditCard.amount + expense.amount - expenseData.amount
+    console.log(newBalance)
+    await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newBalance)
+
+    await this.expenseRepository.update({id}, {...expenseData})
+    // update expense
     return 'Updated expense from service';
   }
 

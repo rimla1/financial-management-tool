@@ -39,9 +39,10 @@ export class ExpensesController {
     }
 
     @Patch(":id")
-    updateExpense(@Body() expenseData: UpdateExpenseDto, @Param("id") id: number){
+    async updateExpense(@Body() expenseData: UpdateExpenseDto, @Param("id", ParseIntPipe) id: number){
         try {
-            return this.expensesService.updateExpense()
+            const updatedExpense = await this.expensesService.updateExpense(id, expenseData)
+            return updatedExpense
         } catch (e) {
             console.log(e)
         }

@@ -10,8 +10,12 @@ export class CreditCardsService {
     private creditCardRepository: Repository<Credit_card>,
   ) {}
 
-  getCreditCards() {
-    return this.creditCardRepository.find();
+  async getCreditCards() {
+    const creditCard = await this.creditCardRepository.find();
+    if(!creditCard){
+      throw new Error("No credit card found!")
+    }
+    return creditCard
   }
 
   async getCreditCard(id: number) {
@@ -41,6 +45,10 @@ export class CreditCardsService {
     );
     return creditCard
   }
+
+  // async updateCreditCardByUpdatedExpense(id: number, amount: number){
+
+  // }
 
   deleteCreditCard(id: number) {
     return this.creditCardRepository.delete({ id });
