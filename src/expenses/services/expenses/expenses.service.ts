@@ -44,18 +44,12 @@ export class ExpensesService {
 
     if(expenseData.creditCardId !== expense.creditCardId){
       return "Menjate expense sa jedne na drugu karticu!"
+    } else {
+      const newBalance = creditCard.amount + expense.amount - expenseData.amount
+      await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newBalance)
     }
 
-    // expense.amount expense.
-    console.log(`updated amount for expense is: `, expenseData.amount)
-    console.log(`old amount for expense is: `, expense.amount)
-    console.log(`old amount for credit card is: `, creditCard.amount)
-    const newBalance = creditCard.amount + expense.amount - expenseData.amount
-    console.log(newBalance)
-    await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newBalance)
-
     await this.expenseRepository.update({id}, {...expenseData})
-    // update expense
     return 'Updated expense from service';
   }
 
