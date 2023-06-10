@@ -23,13 +23,9 @@ export class ExpensesService {
   }
 
   async createExpense(expenseData: any) {
-    // create expense
+
     const newExpense = await this.expenseRepository.create(expenseData);
-
-    // substract from amount of creditCard
     await this.creditCardsService.substractFromCreditCard(expenseData.creditCardId, expenseData.amount)
-
-    // save expense
     await this.expenseRepository.save(newExpense)
 
     return newExpense;
@@ -43,7 +39,11 @@ export class ExpensesService {
     const creditCard = await this.creditCardsService.getCreditCard(expense.creditCardId)
 
     if(expenseData.creditCardId !== expense.creditCardId){
-      return "Menjate expense sa jedne na drugu karticu!"
+      const balanceOfOldCreditCard = creditCard.amount + expense.amount
+      await this.creditCardsService.updateCreditCardByExpense(creditCard.id, balanceOfOldCreditCard)
+      const differentCreditCard = await this.creditCardsService.getCreditCard(expenseData.creditCardId)
+      const balanceOfNewCreditCard = differentCreditCard.amount - expenseData.amount
+      await this.creditCardsService.updateCreditCardByExpense(differentCreditCard.id, balanceOfNewCreditCard)
     } else {
       const newBalance = creditCard.amount + expense.amount - expenseData.amount
       await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newBalance)
