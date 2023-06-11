@@ -8,6 +8,7 @@ import { Balance } from './typeorm/entities/balance.entity';
 import { CreditCardsModule } from './credit-cards/credit-cards.module';
 import { Credit_card } from './typeorm/entities/credit-card.entity';
 import { Expense } from './typeorm/entities/expense.entity';
+import { IncomesModule } from './incomes/incomes.module';
 
 
 @Module({
@@ -20,7 +21,7 @@ import { Expense } from './typeorm/entities/expense.entity';
     database: 'financial-managment-tool', 
     entities: [Balance, Credit_card, Expense],
     synchronize: true,
-  }),ExpensesModule, BalanceModule, CreditCardsModule],
+  }),ExpensesModule, BalanceModule, CreditCardsModule, IncomesModule],
   controllers: [AppController],
   providers: [AppService],
 })
