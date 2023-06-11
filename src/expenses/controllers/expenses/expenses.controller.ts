@@ -50,9 +50,9 @@ export class ExpensesController {
     }
 
     @Delete(":id")
-    deleteExpense(@Param("id") id: number){
+    deleteExpense(@Param("id", ParseIntPipe) id: number){
         try {
-            return this.expensesService.deleteExpense()
+            return this.expensesService.deleteExpense(id)
         } catch (e) {
             console.log(e)
         }

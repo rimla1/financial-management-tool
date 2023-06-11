@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BalanceService } from 'src/balance/services/balance/balance.service';
 import { CreditCardsService } from 'src/credit-cards/services/credit-cards/credit-cards.service';
 import { Expense } from 'src/typeorm/entities/expense.entity';
 import { Repository } from 'typeorm';
@@ -53,7 +52,12 @@ export class ExpensesService {
     return 'Updated expense from service';
   }
 
-  deleteExpense() {
+  async deleteExpense(id: number) {
+    const expense = await this.expenseRepository.findOne({where: {id: id}})
+    const creditCard = await this.creditCardsService.getCreditCard(expense.creditCardId)
+    const newCreditCardBalance = creditCard.amount + expense.amount
+    await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newCreditCardBalance)
+    await this.expenseRepository.delete({id})
     return 'Delete expense from service';
   }
 }
