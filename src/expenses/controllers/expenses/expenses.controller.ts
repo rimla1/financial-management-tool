@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ExpenseNotFoundException } from 'src/errors/expense-not-found.exception';
 import { CreateExpenseDto } from 'src/expenses/dtos/createExpense.dto';
 import { UpdateExpenseDto } from 'src/expenses/dtos/updateExpense.dto';
 import { ExpensesService } from 'src/expenses/services/expenses/expenses.service';
@@ -50,9 +51,13 @@ export class ExpensesController {
     }
 
     @Delete(":id")
-    deleteExpense(@Param("id", ParseIntPipe) id: number){
+    async deleteExpense(@Param("id", ParseIntPipe) id: number){
         try {
-            return this.expensesService.deleteExpense(id)
+            const expense = await this.expensesService.deleteExpense(id)
+            if(!expense){
+                throw new ExpenseNotFoundException()
+            }
+            return "Expense deleted!"
         } catch (e) {
             console.log(e)
         }

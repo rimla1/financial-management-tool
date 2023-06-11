@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreditCardsService } from 'src/credit-cards/services/credit-cards/credit-cards.service';
+import { ExpenseNotFoundException } from 'src/errors/expense-not-found.exception';
 import { Expense } from 'src/typeorm/entities/expense.entity';
 import { Repository } from 'typeorm';
 
@@ -54,6 +55,9 @@ export class ExpensesService {
 
   async deleteExpense(id: number) {
     const expense = await this.expenseRepository.findOne({where: {id: id}})
+    if(!expense){
+      throw new ExpenseNotFoundException()
+    }
     const creditCard = await this.creditCardsService.getCreditCard(expense.creditCardId)
     const newCreditCardBalance = creditCard.amount + expense.amount
     await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newCreditCardBalance)
