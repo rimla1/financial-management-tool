@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Put } from '@nestjs/common';
-import { SetBalanceDto } from 'src/balance/dtos/setBalance.dto';
+import { Controller, Get  } from '@nestjs/common';
 import { BalanceService } from 'src/balance/services/balance/balance.service';
+
 
 @Controller('balance')
 export class BalanceController {
