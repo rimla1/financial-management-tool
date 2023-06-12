@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateIncomeParams, UpdateIncomeParams } from 'src/utils/types';
 
 @Injectable()
 export class IncomesService {
@@ -24,7 +25,7 @@ export class IncomesService {
     }
 
 
-    createIncome(incomeData){
+    createIncome(incomeData: CreateIncomeParams){
         try {
             const income = `SERVICE: create income with body request: ${incomeData}`
             return income
@@ -34,7 +35,7 @@ export class IncomesService {
     }
 
 
-    updateIncome(id: number, incomeData){
+    updateIncome(id: number, incomeData: UpdateIncomeParams){
         try {
             const income = `SERVICE: updated income with id: ${id}, type for id is: ${typeof(id)}, incomeData: ${incomeData}`
             return income
