@@ -1,11 +1,15 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { IncomesService } from 'src/incomes/services/incomes/incomes.service';
 
 @Controller('incomes')
 export class IncomesController {
+
+    constructor(private readonly incomesService: IncomesService){}
+
     @Get()
-    getIncomes(){
+    async getIncomes(){
         try {
-            const incomes = "All incomes"
+            const incomes = await this.incomesService.getIncomes()
             return incomes
         } catch (e) {
             console.log(e)
@@ -14,9 +18,9 @@ export class IncomesController {
 
 
     @Get(":id")
-    getIncome(@Param("id", ParseIntPipe) id: number){
+    async getIncome(@Param("id", ParseIntPipe) id: number){
         try {
-            const income = `"one single income with id: ${id} and typeof is: ${typeof(id)}"`
+            const income = await this.incomesService.getIncome(id)
             return income
         } catch (e) {
             console.log(e)
@@ -24,19 +28,19 @@ export class IncomesController {
     }
 
     @Post()
-    createIncome(@Body() incomeData){
+    async createIncome(@Body() incomeData){
         try {
-            const income = `create income with body request: ${incomeData}`
+            const income = await this.incomesService.createIncome(incomeData)
             return income
         } catch (e) {
             console.log(e)
         }
     }
 
-    @Patch()
-    updateIncome(@Body() incomeData){
+    @Patch(":id")
+    async updateIncome(@Body() incomeData, @Param("id", ParseIntPipe) id: number){
         try {
-            const income = "update income"
+            const income = await this.incomesService.updateIncome(id, incomeData)
             return income
         } catch (e) {
             console.log(e)
@@ -44,9 +48,9 @@ export class IncomesController {
     }
 
     @Delete(":id")
-    deleteIncome(@Param("id", ParseIntPipe) id: number ){
+    async deleteIncome(@Param("id", ParseIntPipe) id: number ){
         try {
-            const income = `deleted income with id: ${id}, type for id is: ${typeof(id)}`
+            const income = await this.incomesService.deleteIncome(id)
             return income
         } catch (e) {
             console.log(e)
