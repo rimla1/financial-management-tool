@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { CreateIncomeDto } from 'src/incomes/dtos/createIncome.dto';
 import { IncomesService } from 'src/incomes/services/incomes/incomes.service';
 
 @Controller('incomes')
@@ -28,7 +29,7 @@ export class IncomesController {
     }
 
     @Post()
-    async createIncome(@Body() incomeData){
+    async createIncome(@Body() incomeData: CreateIncomeDto){
         try {
             const income = await this.incomesService.createIncome(incomeData)
             return income
