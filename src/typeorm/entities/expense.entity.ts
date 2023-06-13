@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Credit_card } from './credit-card.entity';
 
 @Entity()
 export class Expense {
@@ -16,6 +17,9 @@ export class Expense {
 
     @Column()
     creditCardId: number
+
+    @ManyToOne(() => Credit_card, creditCard => creditCard.expenses)
+    creditCard: Credit_card
 
     @CreateDateColumn()
     createdAt: Date;

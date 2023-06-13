@@ -14,7 +14,7 @@ export class CreateIncomeDto {
 
     @IsNotEmpty()
     @IsNumber()
-    baklava: number
+    creditCardId: number
 
     @IsNotEmpty()
     @IsString()

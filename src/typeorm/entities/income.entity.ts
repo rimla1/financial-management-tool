@@ -16,7 +16,7 @@ export class Income {
     description: string
 
     @Column()
-    baklava: number
+    creditCardId: number
 
     @ManyToOne(() => Credit_card, creditCard => creditCard.incomes)
     creditCard: Credit_card;

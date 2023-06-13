@@ -2,7 +2,7 @@ export type CreateIncomeParams = {
     type: string
     amount: number
     description: string
-    baklava: number
+    creditCardId: number
 }
 
 export type UpdateIncomeParams = {
