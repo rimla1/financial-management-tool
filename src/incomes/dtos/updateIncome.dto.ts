@@ -1,19 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator'
+import { PartialType } from '@nestjs/mapped-types'
+import { CreateIncomeDto } from './createIncome.dto'
 
-export class UpdateIncomeDto {
-    @IsOptional()
-    @IsString()
-    type: string
-
-    @IsOptional()
-    @IsNumber()
-    amount: number
-
-    @IsOptional()
-    @IsNumber()
-    creditCardId: number
-
-    @IsOptional()
-    @IsString()
-    description: string
-}
+export class UpdateIncomeDto extends PartialType(CreateIncomeDto){}

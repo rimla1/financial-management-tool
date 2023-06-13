@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsString, Validate } from 'class-validator'
+import { PositiveNumberConstraint } from 'src/utils/isPositiveNumberValidator'
 
 export class CreateIncomeDto {
     @IsNotEmpty()
@@ -7,11 +8,12 @@ export class CreateIncomeDto {
 
     @IsNotEmpty()
     @IsNumber()
+    @Validate(PositiveNumberConstraint)
     amount: number
 
     @IsNotEmpty()
     @IsNumber()
-    creditCardId: number
+    baklava: number
 
     @IsNotEmpty()
     @IsString()

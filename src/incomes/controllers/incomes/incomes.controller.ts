@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateIncomeDto } from 'src/incomes/dtos/createIncome.dto';
+import { UpdateIncomeDto } from 'src/incomes/dtos/updateIncome.dto';
 import { IncomesService } from 'src/incomes/services/incomes/incomes.service';
 
 @Controller('incomes')
@@ -39,7 +40,7 @@ export class IncomesController {
     }
 
     @Patch(":id")
-    async updateIncome(@Body() incomeData, @Param("id", ParseIntPipe) id: number){
+    async updateIncome(@Body() incomeData: UpdateIncomeDto, @Param("id", ParseIntPipe) id: number){
         try {
             const income = await this.incomesService.updateIncome(id, incomeData)
             return income

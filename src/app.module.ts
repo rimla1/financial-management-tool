@@ -9,6 +9,7 @@ import { CreditCardsModule } from './credit-cards/credit-cards.module';
 import { Credit_card } from './typeorm/entities/credit-card.entity';
 import { Expense } from './typeorm/entities/expense.entity';
 import { IncomesModule } from './incomes/incomes.module';
+import { Income } from './typeorm/entities/income.entity';
 
 
 @Module({
@@ -19,7 +20,7 @@ import { IncomesModule } from './incomes/incomes.module';
     username: 'almirmuminovic', 
     password: 'pass123', 
     database: 'financial-managment-tool', 
-    entities: [Balance, Credit_card, Expense],
+    entities: [Balance, Credit_card, Expense, Income],
     synchronize: true,
   }),ExpensesModule, BalanceModule, CreditCardsModule, IncomesModule],
   controllers: [AppController],

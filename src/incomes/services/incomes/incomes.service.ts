@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Income } from 'src/typeorm/entities/income.entity';
 import { CreateIncomeParams, UpdateIncomeParams } from 'src/utils/types';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class IncomesService {
 
-    getIncomes(){
+    constructor(@InjectRepository(Income) private readonly incomeRepository: Repository<Income>){}
+
+    async getIncomes(){
         try {
-            const incomes = "SERVICE: All incomes"
+            const incomes = await this.incomeRepository.find()
             return incomes
         } catch (e) {
             console.log(e)
@@ -25,9 +30,10 @@ export class IncomesService {
     }
 
 
-    createIncome(incomeData: CreateIncomeParams){
+    async createIncome(incomeData: CreateIncomeParams){
         try {
-            const income = `SERVICE: create income with body request: ${incomeData}`
+            const income = await this.incomeRepository.create(incomeData)
+            await this.incomeRepository.save(income)
             return income
         } catch (e) {
             console.log(e)
