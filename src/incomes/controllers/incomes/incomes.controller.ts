@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateIncomeDto } from 'src/incomes/dtos/createIncome.dto';
 import { UpdateIncomeDto } from 'src/incomes/dtos/updateIncome.dto';
 import { IncomesService } from 'src/incomes/services/incomes/incomes.service';
@@ -26,6 +26,9 @@ export class IncomesController {
     async getIncome(@Param("id", ParseIntPipe) id: number){
         try {
             const income = await this.incomesService.getIncome(id)
+            if(!income){
+                throw new NotFoundException("Income not found!")
+            }
             return income
         } catch (e) {
             console.log(e)
@@ -36,6 +39,9 @@ export class IncomesController {
     async createIncome(@Body() incomeData: CreateIncomeDto){
         try {
             const income = await this.incomesService.createIncome(incomeData)
+            if(!income){
+                throw new BadRequestException('Failed to create credit card');
+            }
             return income
         } catch (e) {
             console.log(e)

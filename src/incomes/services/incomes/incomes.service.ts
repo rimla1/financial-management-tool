@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Income } from 'src/typeorm/entities/income.entity';
 import { CreateIncomeParams, UpdateIncomeParams } from 'src/utils/types';
@@ -23,9 +23,12 @@ export class IncomesService {
 
 
 
-    getIncome(id: number){
+    async getIncome(id: number){
         try {
-            const income = `SERVICE: one single income with id: ${id} and typeof is: ${typeof(id)}`
+            const income = await this.incomeRepository.findOne({where: {id}})
+            if(!income){
+                throw new NotFoundException("Income not found!")
+            }
             return income
         } catch (e) {
             console.log(e)
@@ -36,6 +39,9 @@ export class IncomesService {
     async createIncome(incomeData: CreateIncomeParams){
         try {
             const income = await this.incomeRepository.create(incomeData)
+            if(!income){
+                throw new BadRequestException('Failed to create credit card');
+            }
             await this.incomeRepository.save(income)
             return income
         } catch (e) {
