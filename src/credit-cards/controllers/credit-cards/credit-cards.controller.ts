@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -30,6 +32,9 @@ export class CreditCardsController {
   getCreditCard(@Param('id', ParseIntPipe) id: number) {
     try {
       const creditCard = this.creditCardsService.getCreditCard(id);
+      if(!creditCard){
+        throw new HttpException("No credit card found", HttpStatus.NOT_FOUND)
+      }
       return creditCard;
     } catch (e) {
       console.log(e);

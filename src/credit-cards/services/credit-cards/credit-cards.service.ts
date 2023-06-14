@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Credit_card } from 'src/typeorm/entities/credit-card.entity';
 import { Repository } from 'typeorm';
@@ -22,6 +22,9 @@ export class CreditCardsService {
     const creditCard = await this.creditCardRepository.findOne({
       where: { id: id },
     });
+    if(!creditCard){
+      throw new HttpException("No Credit Card found!", HttpStatus.NOT_FOUND)
+    }
     return creditCard;
   }
 
