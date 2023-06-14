@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Credit_card } from 'src/typeorm/entities/credit-card.entity';
 import { Repository } from 'typeorm';
@@ -19,11 +19,9 @@ export class CreditCardsService {
   }
 
   async getCreditCard(id: number) {
-    const creditCard = await this.creditCardRepository.findOne({
-      where: { id: id },
-    });
-    if(!creditCard){
-      throw new HttpException("No Credit Card found!", HttpStatus.NOT_FOUND)
+    const creditCard = await this.creditCardRepository.findOne({where: {id: id}});
+    if (!creditCard) {
+      throw new NotFoundException('No credit card found');
     }
     return creditCard;
   }
@@ -38,6 +36,9 @@ export class CreditCardsService {
       { id },
       { ...creditCardInfo },
     );
+    if(creditCard.affected === 0){
+      throw new NotFoundException("Credit card not found or update failed")
+    }
     return creditCard;
   }
 
@@ -48,10 +49,6 @@ export class CreditCardsService {
     );
     return creditCard
   }
-
-  // async updateCreditCardByUpdatedExpense(id: number, amount: number){
-
-  // }
 
   deleteCreditCard(id: number) {
     return this.creditCardRepository.delete({ id });

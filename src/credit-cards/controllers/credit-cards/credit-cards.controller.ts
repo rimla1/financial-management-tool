@@ -5,6 +5,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  InternalServerErrorException,
+  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -29,15 +31,15 @@ export class CreditCardsController {
   }
 
   @Get(':id')
-  getCreditCard(@Param('id', ParseIntPipe) id: number) {
+  async getCreditCard(@Param('id', ParseIntPipe) id: number) {
     try {
-      const creditCard = this.creditCardsService.getCreditCard(id);
-      if(!creditCard){
-        throw new HttpException("No credit card found", HttpStatus.NOT_FOUND)
+      const creditCard = await this.creditCardsService.getCreditCard(id);
+      if (!creditCard) {
+        throw new NotFoundException('No credit card found');
       }
       return creditCard;
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
@@ -54,13 +56,16 @@ export class CreditCardsController {
   }
 
   @Patch(':id')
-  updateCreditCard(
+  async updateCreditCard(
     @Body() creditCardInfo: UpdateCreditCardDto,
     @Param('id', ParseIntPipe) id: number,
   ) {
     try {
-      this.creditCardsService.updateCreditCard(id, creditCardInfo);
-      return 'Updated!';
+      const updatedCreditCard = await this.creditCardsService.updateCreditCard(id, creditCardInfo);
+      if(!updatedCreditCard){
+        throw new HttpException("Update credit card failed!", HttpStatus.NOT_FOUND)
+      }
+      return updatedCreditCard;
     } catch (e) {
       console.log(e);
     }

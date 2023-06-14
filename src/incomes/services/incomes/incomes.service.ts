@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Income } from 'src/typeorm/entities/income.entity';
 import { CreateIncomeParams, UpdateIncomeParams } from 'src/utils/types';
@@ -12,6 +12,9 @@ export class IncomesService {
     async getIncomes(){
         try {
             const incomes = await this.incomeRepository.find()
+            if(!incomes){
+                throw new NotFoundException("Incomes not found!")
+            }
             return incomes
         } catch (e) {
             console.log(e)

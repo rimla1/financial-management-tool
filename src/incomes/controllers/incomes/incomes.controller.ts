@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { CreateIncomeDto } from 'src/incomes/dtos/createIncome.dto';
 import { UpdateIncomeDto } from 'src/incomes/dtos/updateIncome.dto';
 import { IncomesService } from 'src/incomes/services/incomes/incomes.service';
@@ -12,6 +12,9 @@ export class IncomesController {
     async getIncomes(){
         try {
             const incomes = await this.incomesService.getIncomes()
+            if(!incomes){
+                throw new NotFoundException("Incomes not found!")
+            }
             return incomes
         } catch (e) {
             console.log(e)
