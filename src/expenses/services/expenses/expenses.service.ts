@@ -40,13 +40,13 @@ export class ExpensesService {
 
     if(expenseData.creditCardId !== expense.creditCardId){
       const balanceOfOldCreditCard = creditCard.amount + expense.amount
-      await this.creditCardsService.updateCreditCardByExpense(creditCard.id, balanceOfOldCreditCard)
+      await this.creditCardsService.updateCreditCardByAmount(creditCard.id, balanceOfOldCreditCard)
       const differentCreditCard = await this.creditCardsService.getCreditCard(expenseData.creditCardId)
       const balanceOfNewCreditCard = differentCreditCard.amount - expenseData.amount
-      await this.creditCardsService.updateCreditCardByExpense(differentCreditCard.id, balanceOfNewCreditCard)
+      await this.creditCardsService.updateCreditCardByAmount(differentCreditCard.id, balanceOfNewCreditCard)
     } else {
       const newBalance = creditCard.amount + expense.amount - expenseData.amount
-      await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newBalance)
+      await this.creditCardsService.updateCreditCardByAmount(creditCard.id, newBalance)
     }
 
     await this.expenseRepository.update({id}, {...expenseData})
@@ -60,7 +60,7 @@ export class ExpensesService {
     }
     const creditCard = await this.creditCardsService.getCreditCard(expense.creditCardId)
     const newCreditCardBalance = creditCard.amount + expense.amount
-    await this.creditCardsService.updateCreditCardByExpense(creditCard.id, newCreditCardBalance)
+    await this.creditCardsService.updateCreditCardByAmount(creditCard.id, newCreditCardBalance)
     await this.expenseRepository.delete({id})
     return 'Delete expense from service';
   }

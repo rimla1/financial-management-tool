@@ -52,6 +52,9 @@ export class IncomesController {
     async updateIncome(@Body() incomeData: UpdateIncomeDto, @Param("id", ParseIntPipe) id: number){
         try {
             const income = await this.incomesService.updateIncome(id, incomeData)
+            if(!income){
+                throw new NotFoundException("Income to update not found or update failed!")
+            }
             return income
         } catch (e) {
             console.log(e)

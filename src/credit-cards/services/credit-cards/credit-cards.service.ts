@@ -42,13 +42,14 @@ export class CreditCardsService {
     return creditCard;
   }
 
-  async updateCreditCardByExpense(id: number, amount: number){
+  async updateCreditCardByAmount(id: number, amount: number){
     const creditCard = await this.creditCardRepository.update(
       { id },
       { amount },
     );
     return creditCard
   }
+
 
   deleteCreditCard(id: number) {
     return this.creditCardRepository.delete({ id });
@@ -66,7 +67,18 @@ export class CreditCardsService {
       throw new Error('No credit card found');
     }
     const newBalance = creditCard.amount - amount;
-    await this.updateCreditCardByExpense(id, newBalance);
+    await this.updateCreditCardByAmount(id, newBalance);
     return 'CreditCard Updated!';
   }
+
+  async addToCreditCard(id: number, amount: number){
+    const creditCard = await this.getCreditCard(id);
+    if (!creditCard) {
+      throw new Error('No credit card found');
+    }
+    const newBalance = creditCard.amount + amount;
+    await this.updateCreditCardByAmount(id, newBalance);
+    return 'CreditCard Updated!';
+  }
+
 }
